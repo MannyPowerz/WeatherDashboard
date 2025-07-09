@@ -1,0 +1,147 @@
+.header {
+    width: 100%;
+    height: 110px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 36px;
+    background-color: #1f1f1f;
+    box-sizing: border-box;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.logo-img {
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+}
+
+.current-city {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    margin-left: 20px;
+}
+
+.city-text {
+    color: #FFFFFF;
+    font-size: 28px;
+    font-family: Manuale, sans-serif;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    width: 315px;
+    height: 60px;
+    padding: 11px 14px;
+    border-radius: 8px;
+    background-color: #d9d9d9;
+    box-sizing: border-box;
+    flex-shrink: 0;
+    gap: 10px;
+}
+
+.search-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: rgba(0, 0, 0, 0.7);
+    font-size: 22px;
+    font-family: Manuale, sans-serif;
+    font-weight: 600;
+    min-width: 0;
+}
+
+.search-input::placeholder {
+    color: rgba(0, 0, 0, 0.7);
+}
+
+.search-icon {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .header {
+        padding: 0 24px;
+    }
+
+    .search-bar {
+        width: 280px;
+    }
+
+    .city-text {
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 768px) {
+    .header {
+        padding: 0 16px;
+        height: 90px;
+    }
+
+    .logo-img {
+        width: 48px;
+        height: 48px;
+    }
+
+    .current-city {
+        margin-left: 16px;
+    }
+
+    .city-text {
+        font-size: 20px;
+    }
+
+    .search-bar {
+        width: 200px;
+        height: 50px;
+        padding: 8px 12px;
+    }
+
+    .search-input {
+        font-size: 18px;
+    }
+
+    .search-icon {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header {
+        flex-direction: column;
+        height: auto;
+        padding: 16px;
+        gap: 16px;
+    }
+
+    .current-city {
+        margin-left: 0;
+        justify-content: center;
+    }
+
+    .city-text {
+        font-size: 18px;
+    }
+
+    .search-bar {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+
+
