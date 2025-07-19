@@ -16,7 +16,7 @@
 // The function will handle errors gracefully and log them to the console   
 
 // CONFIGURATION 
-const API_KEY = "d8ef06363dc5a47d53fac7fac06320c1";
+const API_KEY = "*********************************";
 const ONE_CALL_URL = "https://api.openweathermap.org/data/3.0/onecall";
 const GEOCODING_URL = "http://api.openweathermap.org/geo/1.0/direct";
 
