@@ -1,4 +1,3 @@
-/* ===== UPDATED HEADER.CSS ===== */
 .header {
     width: 100%;
     height: 110px;
@@ -74,21 +73,13 @@
     gap: 10px;
 }
 
-.search-input {
-    flex: 1;
-    border: none;
-    outline: none;
-    background: transparent;
-    color: rgba(0, 0, 0, 0.7);
-    font-size: 22px;
-    font-family: Manuale, sans-serif;
-    font-weight: 600;
-    min-width: 0;
+/* .search-input { 
+    This class is for a standalone input. 
+    It's commented out because react-select handles the input now.
+    If you want a custom input, you'd need to adjust react-select's
+    control/input styles to hide its native input and use your own.
 }
-
-.search-input::placeholder {
-    color: rgba(0, 0, 0, 0.7);
-}
+*/
 
 .search-icon {
     width: 28px;
@@ -115,16 +106,21 @@
 /* NEW: Custom Select component styling */
 .header-select {
     flex: 1;
+    /* Allows react-select to take available space in search-container */
 }
 
+/* Control (the input area of react-select) */
 .header-select .react-select__control {
     border: none !important;
     background: transparent !important;
     box-shadow: none !important;
     min-height: auto !important;
+    /* Adjust height to fit container */
     font-size: 22px !important;
     font-family: Manuale, sans-serif !important;
     font-weight: 600 !important;
+    cursor: text !important;
+    /* Ensure text cursor */
 }
 
 .header-select .react-select__control--is-focused {
@@ -132,8 +128,20 @@
     box-shadow: none !important;
 }
 
+/* Input container within the control */
+.header-select .react-select__value-container {
+    padding: 0 !important;
+    /* Remove default padding */
+    /* If you want to hide the selected value display, uncomment below */
+    /* display: none !important; */
+}
+
+/* The actual input element where user types */
 .header-select .react-select__input-container {
-    color: #000000 !important;
+    padding: 0 !important;
+    /* Remove default padding */
+    margin: 0 !important;
+    /* Remove default margin */
 }
 
 .header-select .react-select__input {
@@ -141,32 +149,47 @@
     font-size: 22px !important;
     font-family: Manuale, sans-serif !important;
     font-weight: 600 !important;
-}
-
-/* Force the actual input text to be visible */
-.header-select .react-select__input input {
-    color: #000000 !important;
-    font-size: 22px !important;
-    font-family: Manuale, sans-serif !important;
-    font-weight: 600 !important;
     opacity: 1 !important;
+    /* Ensure text is not transparent */
+    /* Remove default react-select input styling */
+    height: auto !important;
+    line-height: normal !important;
 }
 
+/* Placeholder text */
 .header-select .react-select__placeholder {
     color: rgba(0, 0, 0, 0.6) !important;
     font-size: 22px !important;
     font-family: Manuale, sans-serif !important;
     font-weight: 600 !important;
+    margin: 0 !important;
+    /* Remove default margin */
 }
 
+/* Single value (when an option is selected and displayed in the control) */
+.header-select .react-select__single-value {
+    color: #000000 !important;
+    font-size: 22px !important;
+    /* Match input font size */
+    font-family: Manuale, sans-serif !important;
+    font-weight: 600 !important;
+    margin: 0 !important;
+    /* Remove default margin */
+}
+
+/* Dropdown menu */
 .header-select .react-select__menu {
     background: white !important;
     border-radius: 8px !important;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
     font-family: Manuale, sans-serif !important;
     z-index: 1000 !important;
+    /* Ensure it's above other content */
+    margin-top: 8px;
+    /* Space below the search bar */
 }
 
+/* Individual options in the dropdown */
 .header-select .react-select__option {
     font-size: 16px !important;
     font-family: Manuale, sans-serif !important;
@@ -175,31 +198,45 @@
     padding: 12px 16px !important;
 }
 
+/* Option when hovered or keyboard-focused */
 .header-select .react-select__option--is-focused {
     background: #f8f9fa !important;
+    /* Light gray on hover/focus */
     color: #212529 !important;
 }
 
+/* Option when selected */
 .header-select .react-select__option--is-selected {
     background: #007bff !important;
+    /* Blue when selected */
     color: white !important;
 }
 
 /* NEW: Previous cities styling */
 .header-select .react-select__option[data-is-previous="true"] {
     background: #e7f3ff !important;
+    /* Light blue background */
     border-left: 3px solid #007bff !important;
+    /* Blue border on left */
     font-style: italic !important;
 }
 
 .header-select .react-select__option[data-is-previous="true"]:hover,
 .header-select .react-select__option[data-is-previous="true"].react-select__option--is-focused {
     background: #cce7ff !important;
+    /* Darker blue on hover/focus */
 }
 
+/* Loading indicator */
 .header-select .react-select__loading-indicator {
     color: rgba(0, 0, 0, 0.7) !important;
 }
+
+/* Hide default dropdown indicators (arrows, clear button) */
+.header-select .react-select__indicators {
+    display: none !important;
+}
+
 
 /* Responsive Design */
 @media (max-width: 1024px) {
@@ -244,9 +281,13 @@
         padding: 8px 12px;
     }
 
-    .search-input,
+    /* .search-input, */
+    /* Commented out as react-select handles input */
     .header-select .react-select__control,
-    .header-select .react-select__placeholder {
+    .header-select .react-select__placeholder,
+    .header-select .react-select__input,
+    .header-select .react-select__input input,
+    .header-select .react-select__single-value {
         font-size: 18px !important;
     }
 
@@ -276,113 +317,5 @@
     .search-bar {
         width: 100%;
         max-width: 300px;
-    }
-}
-
-/* ===== UPDATED GLOBAL.CSS ===== */
-/* Global Reset */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-html,
-body,
-#root {
-    height: 100%;
-    font-family: 'Manuale', Arial, sans-serif;
-    background-color: #E4EAF2;
-}
-
-button {
-    border: none;
-    background: none;
-    cursor: pointer;
-    font-family: inherit;
-}
-
-input {
-    border: none;
-    outline: none;
-    font-family: inherit;
-}
-
-img {
-    max-width: 100%;
-    height: auto;
-    display: block;
-}
-
-/* App Layout */
-.app {
-    min-height: 100vh;
-    background-color: #E4EAF2;
-    display: flex;
-    flex-direction: column;
-}
-
-.main {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    gap: 40px;
-    background-color: #E4EAF2;
-}
-
-/* NEW: Debug/Selected City Display */
-.selected-city-debug {
-    background: lightblue;
-    padding: 10px;
-    margin: 10px;
-    border-radius: 4px;
-    font-family: Manuale, sans-serif;
-    font-weight: 500;
-    color: #0c5460;
-    border: 1px solid #bee5eb;
-}
-
-/* NEW: App Error Display */
-.app-error {
-    background: #f8d7da;
-    color: #721c24;
-    padding: 15px;
-    margin: 10px;
-    border-radius: 4px;
-    border: 1px solid #f5c6cb;
-    font-family: Manuale, sans-serif;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-/* Focus states */
-*:focus {
-    outline: 2px solid rgba(255, 255, 255, 0.8);
-    outline-offset: 2px;
-}
-
-/* Responsive */
-@media (max-width: 1024px) {
-    .main {
-        padding: 16px;
-        gap: 30px;
-    }
-}
-
-@media (max-width: 768px) {
-    .main {
-        padding: 12px;
-        gap: 20px;
-    }
-}
-
-@media (max-width: 480px) {
-    .main {
-        padding: 8px;
-        gap: 16px;
     }
 }

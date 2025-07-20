@@ -65,17 +65,32 @@ const Header = ({ onCitySelect }) => {
                 console.log("🔍 Searching for:", searchTerm);
                 const result = await searchCities(searchTerm);
                 
-                if (result.success) {
-                    const searchResults = result.cities.map(city => ({
-                        value: city.id,
-                        label: city.displayName,
-                        cityData: city,
-                        isPrevious: false
-                    }));
+                if (result.success && Array.isArray(result.cities)) {
+                    const searchResults = result.cities.map(city => {
+                        let labelText = city.displayName;
+                        
+                        // Add state if available
+                        if (city.state && typeof city.state === 'string' && city.state.trim() !== '') {
+                            labelText += `, ${city.state}`;
+                        }
+                        // Add country if available and not redundant with state
+                        if (city.country && typeof city.country === 'string' && city.country.trim() !== '') {
+                            if (!city.state || city.country.toLowerCase() !== city.state.toLowerCase()) {
+                                labelText += `, ${city.country}`;
+                            }
+                        }
+
+                        return {
+                            value: city.id,
+                            label: labelText,
+                            cityData: city,
+                            isPrevious: false
+                        };
+                    });
 
                     // Combine previous cities (at top) with search results
-                    const previousOptions = previousCities
-                        .filter(prev => 
+                    const previousOptionsFiltered = previousCities
+                        .filter(prev =>
                             // Only show previous cities that match the search term
                             prev.label.toLowerCase().includes(searchTerm.toLowerCase())
                         )
@@ -85,7 +100,12 @@ const Header = ({ onCitySelect }) => {
                             isPrevious: true
                         }));
 
-                    const combinedOptions = [...previousOptions, ...searchResults];
+                    // Filter out duplicates from searchResults that are already in previousOptionsFiltered
+                    const uniqueSearchResults = searchResults.filter(
+                        searchRes => !previousOptionsFiltered.some(prev => prev.value === searchRes.value)
+                    );
+
+                    const combinedOptions = [...previousOptionsFiltered, ...uniqueSearchResults];
                     setCityOptions(combinedOptions);
                     setError(null);
                     console.log("✅ Found cities:", combinedOptions.length);
@@ -111,7 +131,7 @@ const Header = ({ onCitySelect }) => {
     // ===== UTILITY FUNCTIONS =====
     const saveToPreviousCities = (cityOption) => {
         try {
-            // Get existing previous cities
+            // Get existing previous cities, ensuring no duplicates and limited size
             const existing = [...previousCities];
             
             // Remove the city if it already exists (to avoid duplicates)
@@ -131,21 +151,22 @@ const Header = ({ onCitySelect }) => {
 
     // ===== EVENT HANDLERS =====
     const handleSearchChange = (inputValue) => {
-        const cleanInput = inputValue.replace(/[^a-zA-Z\s,\-]/g, '');
+        // Basic sanitization: remove characters not typically in city/address names
+        const cleanInput = inputValue.replace(/[^a-zA-Z\s,\-.]/g, ''); // Added period for addresses
         setSearchTerm(cleanInput);
     };
 
     const handleCitySelect = (selectedOption) => {
         console.log("📤 Header sending city:", selectedOption.cityData);
         
-        // Create clean option for storage (without clock icon)
+        // Create clean option for storage (without clock icon or isPrevious flag)
         const cleanOption = {
             value: selectedOption.value,
             label: selectedOption.isPrevious ? 
-                selectedOption.label.replace('🕒 ', '') : // Remove clock icon
+                selectedOption.label.replace('🕒 ', '') : // Remove clock icon for storage
                 selectedOption.label,
             cityData: selectedOption.cityData,
-            isPrevious: false
+            // isPrevious should not be stored in previousCities
         };
         
         setSelectedCity(cleanOption);
@@ -160,7 +181,7 @@ const Header = ({ onCitySelect }) => {
             console.error("Failed to save city to localStorage:", error);
         }
 
-        // Save to previous cities
+        // Save to previous cities list
         saveToPreviousCities(cleanOption);
 
         // Send to parent component
@@ -174,7 +195,7 @@ const Header = ({ onCitySelect }) => {
         localStorage.removeItem('lastSelectedCity');
         setSearchTerm('');
         setError(null);
-        // Show previous cities when clearing
+        // Show previous cities when clearing, if any exist
         if (previousCities.length > 0) {
             const previousOptions = previousCities.map(city => ({
                 ...city,
@@ -225,8 +246,8 @@ const Header = ({ onCitySelect }) => {
                         onInputChange={handleSearchChange}
                         options={cityOptions}
                         onChange={handleCitySelect}
-                        value={null}
-                        isClearable={false}
+                        value={null} // Always show placeholder
+                        isClearable={false} // Managed by handleClearCity if needed
                         isSearchable={true}
                         isLoading={isLoading}
                         loadingMessage={() => "🔍 Searching cities..."}
@@ -234,7 +255,7 @@ const Header = ({ onCitySelect }) => {
                             if (isLoading) return "Searching...";
                             if (searchTerm.length < 3 && previousCities.length === 0) return "Type 3+ characters to search";
                             if (searchTerm.length < 3) return "Previous cities shown above";
-                            if (error) return "No results - try a different search";
+                            if (error) return `Error: ${error}`; // Display specific error message
                             return "No cities found";
                         }}
                         onMenuOpen={() => {
@@ -247,53 +268,6 @@ const Header = ({ onCitySelect }) => {
                                 }));
                                 setCityOptions(previousOptions);
                             }
-                        }}
-                        styles={{
-                            control: (base) => ({
-                                ...base,
-                                border: 'none',
-                                background: 'transparent',
-                                boxShadow: 'none',
-                                minHeight: 'auto',
-                                fontSize: '22px',
-                                fontFamily: 'Manuale, sans-serif',
-                                fontWeight: 600
-                            }),
-                            input: (base) => ({
-                                ...base,
-                                color: '#000000',
-                                fontSize: '22px',
-                                fontFamily: 'Manuale, sans-serif',
-                                fontWeight: 600
-                            }),
-                            placeholder: (base) => ({
-                                ...base,
-                                color: 'rgba(0, 0, 0, 0.6)',
-                                fontSize: '22px',
-                                fontFamily: 'Manuale, sans-serif',
-                                fontWeight: 600
-                            }),
-                            singleValue: (base) => ({
-                                ...base,
-                                color: '#000000'
-                            }),
-                            menu: (base) => ({
-                                ...base,
-                                background: 'white',
-                                borderRadius: '8px',
-                                boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-                                fontFamily: 'Manuale, sans-serif',
-                                zIndex: 1000
-                            }),
-                            option: (base, state) => ({
-                                ...base,
-                                fontSize: '16px',
-                                fontFamily: 'Manuale, sans-serif',
-                                color: state.isSelected ? 'white' : '#212529',
-                                backgroundColor: state.isSelected ? '#007bff' : 
-                                            (state.isFocused ? '#f8f9fa' : 'white'),
-                                padding: '12px 16px'
-                            })
                         }}
                     />
                     
