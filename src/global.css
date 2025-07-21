@@ -77,6 +77,15 @@ img {
     gap: 8px;
 }
 
+.error-guidance {
+    color: white;
+    font-size: 16px;
+    font-family: Manuale, sans-serif;
+    font-weight: 500;
+    margin-top: 8px;
+    display: block;
+}
+
 /* Focus states */
 *:focus {
     outline: 2px solid rgba(255, 255, 255, 0.8);
