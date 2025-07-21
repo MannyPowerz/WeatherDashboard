@@ -126,9 +126,9 @@ const CurrentWeatherCard = ({currentWeather, convertTemperature, formatDate, isL
                     </div>
                     
                     <div className="center-section">
-                        <span className="temp-fahrenheit">{displayTemperatureF}</span>
+                        <span className="temp-fahrenheit">{displayTemperatureF}°F</span>
                         <div className="temp-divider"></div>
-                        <span className="temp-celsius">{displayTemperatureC}</span>
+                        <span className="temp-celsius">{displayTemperatureC}°C</span>
                     </div>
                     
                     <div className="stats-divider"></div>
