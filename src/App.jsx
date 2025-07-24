@@ -49,7 +49,7 @@ const App = () => {
         console.log("🎯 App received city:", cityData);
         setSelectedCity(cityData);
         setAppError(null);
-        // Fixed: Removed useEffect from inside this function
+        //Removed useEffect from inside this function
     };
     return (
         <div className="app">
@@ -83,7 +83,16 @@ const App = () => {
                     isLoading={isLoading} // <--- Pass isLoading
                     appError={appError}   // <--- Pass appError
                 />
-                <ForecastTable />
+                
+                <ForecastTable 
+                    hourlyForecast={weatherData ? weatherData.hourly : []}
+                    dailyForecast={weatherData ? weatherData.daily : []}
+                    convertTemperature={convertTemperature}
+                    formatDate={formatDate}
+                    
+                    isLoading={isLoading} // <--- Pass isLoading
+                    appError={appError}   // <--- Pass appError
+                />
             </main>
         </div>
     );

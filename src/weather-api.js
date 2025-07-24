@@ -16,7 +16,7 @@
 // The function will handle errors gracefully and log them to the console   
 
 // CONFIGURATION 
-const API_KEY = "***********************"; // Replace with your actual key
+const API_KEY = "d8ef06363dc5a47d53fac7fac06320c1"; // Replace with your actual key
 const CURRENT_WEATHER_URL = "https://api.openweathermap.org/data/2.5/weather"; // FREE
 const FORECAST_URL = "https://api.openweathermap.org/data/2.5/forecast"; // FREE
 const GEOCODING_URL = "http://api.openweathermap.org/geo/1.0/direct"; // FREE
