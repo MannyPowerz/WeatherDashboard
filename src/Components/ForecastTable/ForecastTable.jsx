@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './forecast-table.css';
 
-const ForecastTable = ({dailyForecast, convertTemperature, formatDate, isLoading, appError}) => {
+const ForecastTable = ({dailyForecast, convertTemperature, isLoading, appError}) => {
     const [temperatureUnit, setTemperatureUnit] = useState('F');
 
 // Loads when current weather data is fetched after city selection in search bar useEffect for depency of selectedCity
@@ -10,6 +10,16 @@ const ForecastTable = ({dailyForecast, convertTemperature, formatDate, isLoading
 
     const toggleTemperatureUnit = () => {
         setTemperatureUnit(prev => prev === 'F' ? 'C' : 'F');
+    };
+
+    const formatDateCustom = (timestamp, format = 'day') => {
+        const date = new Date(timestamp * 1000); // Convert Unix timestamp to milliseconds
+        if (format === 'day') {
+            return date.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase();
+        } else if (format === 'date') {
+            return date.toLocaleDateString('en-US', { month: 'numeric', day: 'numeric' });
+        }
+        return date.toLocaleDateString();
     };
 
     if (isLoading) {
@@ -102,11 +112,22 @@ const ForecastTable = ({dailyForecast, convertTemperature, formatDate, isLoading
             
             <div className="table-body">
                 {dailyForecast.map((day, index) => {
-                    const dayName = formatDate(day.timestamp, { weekday: 'short' }).toUpperCase();
-                    const dateText = formatDate(day.timestamp, { month: 'numeric', day: 'numeric' });
+                    const dayName = formatDateCustom(day.timestamp, 'day');
+                    const dateText = formatDateCustom(day.timestamp, 'date');
 
-                    const highTemp = convertTemperature(day.high, 'K', temperatureUnit);
-                    const lowTemp = convertTemperature(day.low, 'K', temperatureUnit);
+                    //Access correct temperature properties from API data
+                    // API returns day.temperature.max and day.temperature.min, not day.high/low
+                    const highTemp = convertTemperature(
+                        day.temperature?.max || day.high || 0, 
+                        'K',
+                        temperatureUnit
+                    );
+
+                    const lowTemp = convertTemperature(
+                        day.temperature?.min || day.low || 0,
+                        'K',
+                        temperatureUnit
+                    );
 
                     const descriptionText = day.description.charAt(0).toUpperCase() + day.description.slice(1);
 

@@ -85,10 +85,8 @@ const App = () => {
                 />
                 
                 <ForecastTable 
-                    hourlyForecast={weatherData ? weatherData.hourly : []}
                     dailyForecast={weatherData ? weatherData.daily : []}
                     convertTemperature={convertTemperature}
-                    formatDate={formatDate}
                     
                     isLoading={isLoading} // <--- Pass isLoading
                     appError={appError}   // <--- Pass appError
