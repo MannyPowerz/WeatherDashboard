@@ -66,6 +66,7 @@ If you plan to use this project:
 - Replace the placeholder in the code with your own key.
 
 > **Why no `.env` file?**  
+> I understand it is best practice to use an .env file
 > Normally, API keys are stored in a `.env` file (environment variables) for security. However, this project **does not use Node.js** for its setup, and `.env` handling in React without Node is impractical for a simple frontend-only build.  
 > Because of that, I did not include `.env` management or `.gitignore` for API keys. If you use this in production, ensure you set up secure environment variable handling (e.g., with a backend or CI/CD secrets).
 
