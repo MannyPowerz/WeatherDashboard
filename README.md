@@ -27,19 +27,6 @@ The Weather Dashboard is a responsive, modern web app that displays real-time we
 
 ---
 
-## 📌 Upcoming Steps
-
-- [ ] Connect to **OpenWeather API**
-- [ ] Add **search functionality**
-- [ ] Display **live weather data**
-- [ ] Save last searched city to **localStorage**
-- [ ] Implement **error handling**
-- [ ] Add **loading indicator**
-- [ ] Build **dark mode**
-- [ ] Deploy app via **Vercel** or **Netlify**
-
----
-
 ## 💻 Tech Stack
 
 - **Frontend:** React.js, JavaScript, HTML5, CSS3
@@ -65,10 +52,22 @@ bash
 npm install
 
 3. **Add your API key:**
+   Open `src/config.js` and replace the placeholder with **your own API key** from OpenWeather.
 
-Create a .env file in the root of your project and add the following line (replace with your actual API key):
+> **Note:** A `config.js` file is used instead of a `.env` file for simplicity, as this is a frontend-only learning project.  
+> A `.gitignore` has been added to keep build files, dependencies, and future environment files out of version control.
 
-REACT_APP_WEATHER_API_KEY=your_openweather_api_key
+## ⚠️ API Key Notice
+
+The **API key in this project is not currently active**.  
+If you plan to use this project:
+
+- Please **generate your own free API key** by signing up at [OpenWeather API](https://openweathermap.org/api) (use the **2.5 Free Version**).
+- Replace the placeholder in the code with your own key.
+
+> **Why no `.env` file?**  
+> Normally, API keys are stored in a `.env` file (environment variables) for security. However, this project **does not use Node.js** for its setup, and `.env` handling in React without Node is impractical for a simple frontend-only build.  
+> Because of that, I did not include `.env` management or `.gitignore` for API keys. If you use this in production, ensure you set up secure environment variable handling (e.g., with a backend or CI/CD secrets).
 
 4.  Run Locally with Vite
     Start the development server:
@@ -79,3 +78,11 @@ npm run dev
 5. Preview Your App
    Once the server is running, open your browser and visit:
    http://localhost:5173
+
+   ## 📂 Project Setup
+
+6. **Clone the repo:**
+   ```bash
+   git clone https://github.com/MannyPowerz/WeatherDashboard.git
+   cd WeatherDashboard
+   ```
